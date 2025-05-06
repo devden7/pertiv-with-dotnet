@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pertiv_be_with_dotnet.Data;
+using Microsoft.EntityFrameworkCore;
+using Pertiv_be_with_dotnet.Services;
 
 namespace Pertiv_be_with_dotnet
 {
@@ -26,6 +29,11 @@ namespace Pertiv_be_with_dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<AppDbContext>(options => 
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
