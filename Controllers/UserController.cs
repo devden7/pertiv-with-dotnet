@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pertiv_be_with_dotnet.Dtos;
 using Pertiv_be_with_dotnet.Enums;
@@ -52,6 +53,7 @@ namespace Pertiv_be_with_dotnet.Controllers
         }
 
         [HttpGet("staffs")]
+        [Authorize(Roles = "admin")]
         public IActionResult GetStaffList()
         {
             var data = _userService.GetStaffAccount();

@@ -39,6 +39,7 @@ namespace Pertiv_be_with_dotnet
 
             services.AddScoped<UserService>();
             services.AddScoped<AuthService>();
+            services.AddScoped<AdminAccountSeeder>();
 
             var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
 
@@ -70,6 +71,7 @@ namespace Pertiv_be_with_dotnet
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
