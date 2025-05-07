@@ -13,6 +13,10 @@ using Microsoft.Extensions.Logging;
 using Pertiv_be_with_dotnet.Data;
 using Microsoft.EntityFrameworkCore;
 using Pertiv_be_with_dotnet.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text;
 
 namespace Pertiv_be_with_dotnet
 {
@@ -34,6 +38,24 @@ namespace Pertiv_be_with_dotnet
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<UserService>();
+            services.AddScoped<AuthService>();
+
+            var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,7 +12,7 @@ namespace Pertiv_be_with_dotnet.Controllers
     [Route("admin")]
     public class UserController : ControllerBase
     {
-        private static UserService _userService;
+        private static UserService _userService { get; set; }
 
         public UserController(UserService userService)
         {
